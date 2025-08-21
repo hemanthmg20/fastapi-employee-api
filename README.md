@@ -40,8 +40,7 @@ your-project-folder/
 
 ### 1️⃣ Clone the Repository
 
-- git clone https://github.com/hemanthmg20/fastapi-employee-api
-- cd your-repo-name
+- git clone https://github.com/hemanthmg20/fastapi-employee-api.git
 
 ### 2️⃣ Create a Virtual Environment
 
