@@ -68,7 +68,7 @@ After starting, navigate to:
 
 ---
 
-🔗 API Endpoints
+## 🔗 API Endpoints
 
 | Method | Endpoint      | Description                 | Request Body                                  |
 | ------ | ------------- | --------------------------- | --------------------------------------------- |
