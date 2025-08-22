@@ -1,24 +1,29 @@
-# 🧑‍💼 Employee Management API with FastAPI
+# 🧑‍💼 Employee Management API with FastAPI + JWT Authentication
 
-This project is a **FastAPI-based Employee Management System**. It allows you to perform CRUD operations (Create, Read, Update, Delete) and **authenticate employees** securely with hashed passwords.
+This project is a **FastAPI-based Employee Management System**.  
+It supports **secure JWT authentication** and full **CRUD operations** on employee data.
 
 Built with:
-- ✅ FastAPI
+- ✅ FastAPI (web framework)
 - ✅ SQLAlchemy ORM
 - ✅ SQLite (default DB)
-- ✅ Pydantic for data validation
-- ✅ Passlib for secure password hashing
+- ✅ Pydantic (data validation)
+- ✅ Passlib (bcrypt password hashing)
+- ✅ Python-JOSE (JWT signing & verification)
+- ✅ Uvicorn (ASGI server)
 
 ---
 
 ## 📌 Features
 
-- 🚀 Create new employee records
+- 🚀 Create new employee records (passwords securely hashed with bcrypt)
 - 🔍 Retrieve single or multiple employee records
 - ✏️ Update employee information
 - ❌ Delete employee entries
-- 🔐 Authenticate employee using hashed password verification
-- 📄 OpenAPI (Swagger) documentation auto-generated
+- 🔐 JWT-based Authentication:
+  - Login with email + password to get a JWT
+  - Access protected routes using `Authorization: Bearer <token>`
+- 📄 Auto-generated API docs with **Swagger UI** and **ReDoc**
 
 ---
 
@@ -52,7 +57,7 @@ your-project-folder/
 
 ### 3️⃣ Install Dependencies
 
-- pip install fastapi uvicorn sqlalchemy passlib[bcrypt]
+- pip install fastapi uvicorn sqlalchemy passlib[bcrypt] "python-jose[cryptography]" python-multipart
 
 ---
 
@@ -70,14 +75,15 @@ After starting, navigate to:
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint      | Description                 | Request Body                                  |
-| ------ | ------------- | --------------------------- | --------------------------------------------- |
-| POST   | `/emp`        | Create a new employee       | `emp_id`, `name`, `dept`, `email`, `password` |
-| GET    | `/emp`        | Retrieve all employees      | *None*                                        |
-| GET    | `/emp/{id}`   | Retrieve employee by ID     | *None*                                        |
-| PUT    | `/emp/{id}`   | Update an existing employee | `emp_id`, `name`, `dept`, `email`, `password` |
-| DELETE | `/emp/{id}`   | Delete an employee by ID    | *None*                                        |
-| POST   | `/emp/verify` | Verify employee credentials | `emp_id`, `name`, `dept`, `email`, `password` |
+| Method | Endpoint    | Description                      | Auth Required |
+| ------ | ----------- | -------------------------------- | ------------- |
+| POST   | `/emp`      | Create new employee              | ❌             |
+| GET    | `/emp`      | Retrieve all employees           | ✅             |
+| GET    | `/emp/{id}` | Retrieve employee by ID          | ✅             |
+| PUT    | `/emp/{id}` | Update employee by ID            | ✅             |
+| DELETE | `/emp/{id}` | Delete employee by ID            | ✅             |
+| POST   | `/token`    | Login → returns JWT access token | ❌             |
+
 
 ---
 
@@ -87,7 +93,31 @@ After starting, navigate to:
 
 - No plaintext passwords are stored.
 
-- During login, the hashed password is verified using verify_password().
+- The hashed password is verified using verify_password().
+
+---
+
+## 🔐 Authentication Flow
+
+### Register Employee
+Use /emp to create an employee (password is hashed).
+
+### Login & Get Token
+Call /token with form data
+
+### Access Protected Routes
+
+---
+
+## 🧠 Security Highlights
+
+- Passwords stored only in hashed form (bcrypt).
+
+- JWT tokens include expiry claim (exp).
+
+- Tokens signed with HS256 using a secret key.
+
+- Unauthorized users cannot access protected endpoints.
 
 ---
 
@@ -105,14 +135,16 @@ You can use tools like:
 
 ## ⚙️ Technology Stack
 
-| Technology | Purpose                         |
-| ---------- | ------------------------------- |
-| FastAPI    | Web framework                   |
-| SQLAlchemy | ORM (Object Relational Mapper)  |
-| SQLite     | Lightweight DB (local)          |
-| Pydantic   | Data validation & serialization |
-| Passlib    | Password hashing                |
-| Uvicorn    | ASGI server                     |
+| Technology     | Purpose                    |
+| -------------- | -------------------------- |
+| FastAPI        | Web framework              |
+| SQLAlchemy ORM | Database ORM               |
+| SQLite         | Lightweight DB             |
+| Pydantic       | Data validation            |
+| Passlib        | Secure password hashing    |
+| Python-JOSE    | JWT handling (sign/verify) |
+| Uvicorn        | ASGI server                |
+
 
 ---
 
