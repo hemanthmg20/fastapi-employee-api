@@ -43,7 +43,7 @@ def get_current_user(token : str = Depends(oauth2_scheme), db : Session = Depend
         raise credential_exception
     return user
 
-@app.post('/token', response_model=Token, tags=['Auth'])
+@app.post('/token', response_model=Token, tags=['Auth'], include_in_schema= False)
 def login_for_access_token(form_data : OAuth2PasswordRequestForm = Depends(), db : Session = Depends(get_db)):
     user = db.query(empData).filter(empData.email == form_data.username).first()
 
@@ -79,7 +79,7 @@ def get_employees(db:Session = Depends(get_db), current_user: empData = Depends(
 
 
 @app.get('/emp/{id}', response_model=emp_resopnse, tags=["Employees"])
-def get_emp(id:int,db:Session = Depends(get_db), current_user: empData = Depends(get_current_user)):
+def get_emp(id:int, db:Session = Depends(get_db), current_user: empData = Depends(get_current_user)):
     emp = db.query(empData).filter(empData.emp_id == id).first()
 
     if emp is None:
@@ -118,7 +118,7 @@ def delete_emp(id:int, db:Session = Depends(get_db), current_user: empData = Dep
 
         
 @app.post('/emp/verify',tags=["Authenticate user"])
-def verify_emp(request : emp_schema, db:Session = Depends(get_db)):
+def verify_emp(request : emp_schema, db:Session = Depends(get_db), curr_user : empData = Depends(get_current_user)):
     emp = db.query(empData).filter(empData.emp_id == request.emp_id).first()
 
     if emp is None:
@@ -128,3 +128,4 @@ def verify_emp(request : emp_schema, db:Session = Depends(get_db)):
             return {'data':'validation successfully'}
         else:
             return {'data':'Check your credentials again'}
+        
