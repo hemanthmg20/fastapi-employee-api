@@ -1,29 +1,20 @@
 # 🧑‍💼 Employee Management API with FastAPI + JWT Authentication
 
-This project is a **FastAPI-based Employee Management System**.  
-It supports **secure JWT authentication** and full **CRUD operations** on employee data.
-
-Built with:
-- ✅ FastAPI (web framework)
-- ✅ SQLAlchemy ORM
-- ✅ SQLite (default DB)
-- ✅ Pydantic (data validation)
-- ✅ Passlib (bcrypt password hashing)
-- ✅ Python-JOSE (JWT signing & verification)
-- ✅ Uvicorn (ASGI server)
+This project is a **FastAPI-based Employee Management System** with secure JWT authentication and full CRUD functionality for employee data.
 
 ---
 
-## 📌 Features
+## 🚀 Features
 
-- 🚀 Create new employee records (passwords securely hashed with bcrypt)
-- 🔍 Retrieve single or multiple employee records
-- ✏️ Update employee information
-- ❌ Delete employee entries
-- 🔐 JWT-based Authentication:
-  - Login with email + password to get a JWT
+- Create new employee records (passwords securely hashed with bcrypt)
+- Retrieve single or multiple employees
+- Update employee information
+- Delete employee entries
+- JWT-based Authentication:
+  - Login with email + password to obtain a JWT access token
   - Access protected routes using `Authorization: Bearer <token>`
-- 📄 Auto-generated API docs with **Swagger UI** and **ReDoc**
+- Auto-generated interactive API docs with **Swagger UI** and **ReDoc**
+- Swagger UI integrates authentication via the **Authorize** button
 
 ---
 
@@ -75,15 +66,13 @@ After starting, navigate to:
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint    | Description                      | Auth Required |
-| ------ | ----------- | -------------------------------- | ------------- |
-| POST   | `/emp`      | Create new employee              | ❌             |
-| GET    | `/emp`      | Retrieve all employees           | ✅             |
-| GET    | `/emp/{id}` | Retrieve employee by ID          | ✅             |
-| PUT    | `/emp/{id}` | Update employee by ID            | ✅             |
-| DELETE | `/emp/{id}` | Delete employee by ID            | ✅             |
-| POST   | `/token`    | Login → returns JWT access token | ❌             |
-
+| Method | Endpoint     | Description                 | Auth Required |
+| ------ | ------------ | --------------------------- | ------------- |
+| POST   | `/emp`       | Create a new employee       | ❌            |
+| GET    | `/emp`       | Retrieve all employees      | ✅            |
+| GET    | `/emp/{id}`  | Retrieve employee by ID     | ✅            |
+| PUT    | `/emp/{id}`  | Update an existing employee | ✅            |
+| DELETE | `/emp/{id}`  | Delete an employee by ID    | ✅            |
 
 ---
 
@@ -99,25 +88,29 @@ After starting, navigate to:
 
 ## 🔐 Authentication Flow
 
-### Register Employee
-Use /emp to create an employee (password is hashed).
+1. **Register User (Sign Up)**  
+   `POST /emp` — create a new employee with hashed password.
 
-### Login & Get Token
-Call /token with form data
+2. **Authorize via Swagger UI**  
+   Click **Authorize**, enter email + password.  
+   Swagger automatically calls `/token` to get a JWT and stores it.  
+   Subsequent requests include `Authorization: Bearer <token>`.
 
-### Access Protected Routes
-
+3. **Access Protected Routes**  
+   Use Swagger or any HTTP client with the token to call:
+   - `GET /emp`
+   - `GET /emp/{id}`
+   - `PUT /emp/{id}`
+   - `DELETE /emp/{id}`
+  
 ---
 
 ## 🧠 Security Highlights
 
-- Passwords stored only in hashed form (bcrypt).
-
-- JWT tokens include expiry claim (exp).
-
-- Tokens signed with HS256 using a secret key.
-
-- Unauthorized users cannot access protected endpoints.
+- Passwords hashed using **bcrypt** (`passlib`)
+- JWT tokens signed with **HS256** and include **expiry (`exp`)**
+- Expired or invalid tokens are rejected with `401 Unauthorized`
+- Swagger UI login flow integrated via **OAuth2 Password Flow**
 
 ---
 
@@ -126,25 +119,22 @@ Call /token with form data
 You can use tools like:
 
 - 🔧 Postman
-
 - 🧪 curl
-
 - 🧰 Swagger UI: http://127.0.0.1:8000/docs
 
 ---
 
 ## ⚙️ Technology Stack
 
-| Technology     | Purpose                    |
-| -------------- | -------------------------- |
-| FastAPI        | Web framework              |
-| SQLAlchemy ORM | Database ORM               |
-| SQLite         | Lightweight DB             |
-| Pydantic       | Data validation            |
-| Passlib        | Secure password hashing    |
-| Python-JOSE    | JWT handling (sign/verify) |
-| Uvicorn        | ASGI server                |
-
+| Technology     | Purpose                         |
+| -------------- | ------------------------------- |
+| FastAPI        | Web framework                   |
+| SQLAlchemy ORM | Database ORM                    |
+| SQLite         | Lightweight database            |
+| Pydantic       | Data validation & serialization |
+| Passlib        | Secure password hashing         |
+| Python-JOSE    | JWT signing & verification      |
+| Uvicorn        | ASGI server                     |
 
 ---
 
